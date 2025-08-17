@@ -1,1 +1,1 @@
-Project To-Do-List for simple design to finish RevoU assigment.
+Project To-Do-List simple design to finish RevoU assigment.
