@@ -1,3 +1,12 @@
+function saveTasks() {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
+function loadTasks() {
+    const data = localStorage.getItem("tasks");
+    tasks = data ? JSON.parse(data) : [];
+}
+
 document.addEventListener("DOMContentLoaded", () =>{
 const inputTask = document.querySelector(".input-task");
 const inputDate = document.querySelector(".input-date");
@@ -31,13 +40,13 @@ function renderTasks(filter = "all"){
         return;
     }
 
-    filteredTasks.forEach((task, index) => {
+    filteredTasks.forEach((task) => {
         const li = document.createElement("li");
         li.classList.add("task-value");
 
         const span = document.createElement("span");
         span.innerHTML = `
-        <input type="checkbox" ${task.completed ? "checked" : ""} data-index="${index}">
+        <input type="checkbox" ${task.completed ? "checked" : ""} data-id="${task.id}">
         <s style="text-decoration: ${task.completed ? 'line-through' : 'none'};">
             ${task.text} (${task.date}) 
         </s>`;
@@ -46,7 +55,7 @@ function renderTasks(filter = "all"){
         subtools.classList.add("subtools");
         subtools.innerHTML = `
         <span>
-            <i class="fa fa-trash" style="color:red;" data-index="${index}"></i>
+            <i class="fa fa-trash" style="color:red;" data-id="${task.id}"></i>
         </span>`;
 
         li.appendChild(span);
@@ -68,11 +77,13 @@ function renderTasks(filter = "all"){
         }
 
         tasks.push({
+            id: Date.now(),
             text: inputTask.value.trim(),
             date: inputDate.value,
             completed:false
         });
 
+        saveTasks();
         inputTask.value = "";
         inputDate.value = "";
         renderTasks(getActiveFilter());
@@ -81,8 +92,10 @@ function renderTasks(filter = "all"){
     //fungsi toggle status selesai
     taskList.addEventListener("change", (e) => {
         if (e.target.type === "checkbox"){
-            const index = e.target.dataset.index;
-            tasks[index].completed = e.target.checked;
+            const id = Number(e.target.dataset.id);
+            const task = tasks.find(t => t.id === id);
+            task.completed = e.target.checked;
+            saveTasks();
             renderTasks(getActiveFilter());
         }
     });
@@ -90,8 +103,9 @@ function renderTasks(filter = "all"){
     //fungsi hapus task fa-trash
     taskList.addEventListener("click", (e) => {
         if (e.target.classList.contains("fa-trash")) {
-            const index = e.target.dataset.index;
-            tasks.splice(index, 1);
+            const id = Number(e.target.dataset.id);
+            tasks = tasks.filter(t => t.id !== id);
+            saveTasks();
             renderTasks(getActiveFilter());
         }
     });
@@ -113,11 +127,13 @@ function renderTasks(filter = "all"){
     clearButton.addEventListener("click", () => {
         if (confirm("Apa kamu yakin ingin menghapus semua task?")) {
             tasks = [];
+            saveTasks();
             renderTasks();
         }
     });
 
     //inisialisasi awal
+    loadTasks();
     renderTasks();
 
 });
