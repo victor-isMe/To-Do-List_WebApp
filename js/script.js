@@ -60,7 +60,12 @@ importInput.addEventListener("change", (e) => {
                 return;
             }
 
-            tasks = importedTasks;
+            const existingId = new Set(tasks.map(t => t.id));
+
+            const newTasks = importedTasks.filter(t => !existingId.has(t.id));
+
+            tasks = [...tasks, ...newTasks];
+            
             saveTasks();
             renderTasks();
 
