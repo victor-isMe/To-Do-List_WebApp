@@ -1,12 +1,3 @@
-function saveTasks() {
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-}
-
-function loadTasks() {
-    const data = localStorage.getItem("tasks");
-    tasks = data ? JSON.parse(data) : [];
-}
-
 document.addEventListener("DOMContentLoaded", () =>{
 const inputTask = document.querySelector(".input-task");
 const inputDate = document.querySelector(".input-date");
@@ -14,8 +5,88 @@ const addButton = document.querySelector("button");
 const taskList = document.querySelector(".task-list");
 const filterButtons = document.querySelectorAll(".task-filter span");
 const clearButton = document.querySelector(".clear-button");
+const exportBtn = document.querySelector(".export-btn");
+const importBtn = document.querySelector(".import-btn");
+const importInput = document.querySelector(".import-input");
 
 let tasks = [];
+
+//Fungsi save tasks
+function saveTasks() {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
+//fungsi Load tasks
+function loadTasks() {
+    const data = localStorage.getItem("tasks");
+    tasks = data ? JSON.parse(data) : [];
+}
+
+//fungsi export (download file)
+function exportTasks() {
+    const dataStr = JSON.stringify(tasks, null, 2);
+    const blob = new Blob([dataStr], {type: "application/json"});
+
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+
+    a.href = url;
+    a.download = "tasks.json";
+    a.click();
+
+    URL.revokeObjectURL(url);
+}
+
+//addEventListener ke export button
+exportBtn.addEventListener("click", exportTasks);
+
+//Fitur import (upload file)
+importBtn.addEventListener("click", () => {
+    importInput.click();
+});
+
+importInput.addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+
+    reader.onload = () => {
+        try {
+            const importedTasks = JSON.parse(reader.result);
+
+            if (!Array.isArray(importedTasks)) {
+                alert("File tidak valid!");
+                return;
+            }
+
+            tasks = importedTasks;
+            saveTasks();
+            renderTasks();
+
+            alert("Import berhasil!");
+        } catch (err) {
+            alert("Gagal membaca file JSON!");
+        }
+    };
+
+    reader.readAsText(file);
+});
+
+//Fungsi set status waktu
+function getTimeStatus(task) {
+    if (task.completed) return "";
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const taskDate = new Date(task.date);
+    taskDate.setHours(0, 0, 0, 0);
+
+    if (taskDate < today) return "overdue";
+    if (taskDate.getTime() === today.getTime()) return "today";
+    return "upcoming";
+}
 
 //fungsi render ulang task
 function renderTasks(filter = "all"){
@@ -41,15 +112,19 @@ function renderTasks(filter = "all"){
     }
 
     filteredTasks.forEach((task) => {
+        const status = getTimeStatus(task);
         const li = document.createElement("li");
         li.classList.add("task-value");
+        if (status) li.classList.add(status);
 
         const span = document.createElement("span");
         span.innerHTML = `
         <input type="checkbox" ${task.completed ? "checked" : ""} data-id="${task.id}">
         <s style="text-decoration: ${task.completed ? 'line-through' : 'none'};">
             ${task.text} (${task.date}) 
-        </s>`;
+        </s>
+        ${status? `<small class="status ${status}">${status}</small>` : ""}
+        `;
 
         const subtools = document.createElement("div");
         subtools.classList.add("subtools");
@@ -137,3 +212,12 @@ function renderTasks(filter = "all"){
     renderTasks();
 
 });
+
+if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+        navigator.serviceWorker
+            .register("./service-worker.js")
+            .then(() => console.log("Service Worker registered"))
+            .catch((err) => console.error("Service Worker failed: ", err));
+    });
+}

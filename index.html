@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#4caf50">
     <title>To-Do List Project</title>
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="manifest" href="manifest.json">
 </head>
 <body>
     <header>
@@ -38,6 +40,12 @@
             </ul>
         </div>   
     </section>
+
+    <div class="btn-add">
+        <button class="export-btn">Export</button>
+        <input type="file" class="import-input" accept=".json" hidden>
+        <button class="import-btn">Import</button>
+    </div>
 
     <script src="./js/script.js"></script>
 </body>
