@@ -137,13 +137,13 @@ header p{
     display: flex;
     flex-direction: row;
     justify-content: center;
-    gap: 1%;
-    margin-top: 0.8%;
+    gap: 10px;
+    margin-top: 10px;
 }
 .export-btn, .import-btn{
-    padding: 1.5%;
+    padding: 12px;
     border: 1px solid transparent;
-    border-radius: 10%;
+    border-radius: 10px;
     font-weight: bolder;
 }
 .export-btn:hover{
