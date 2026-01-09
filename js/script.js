@@ -104,10 +104,57 @@ const statusPriority = {
     overdue: 3
 };
 
+const AUTO_ARCHIVE_DAYS = 2;
+
+function daysBetween(dateString) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const target = new Date(dateString);
+    target.setHours(0, 0, 0, 0);
+
+    const diff = today - target;
+    return Math.floor(diff/(1000*60*60*24));
+}
+
+function autoArchiveTasks() {
+    let changed = false;
+
+    tasks.forEach(task => {
+        if (task.archived) return;
+
+        //Task completed
+        if (task.completed && task.completedAt) {
+            const days = daysBetween(task.completedAt);
+
+            if (days >= AUTO_ARCHIVE_DAYS) {
+                task.archived = true;
+                changed = true;
+            }
+        }
+
+        //Task overdue
+        if (!task.completed) {
+            const days = daysBetween(task.date);
+
+            if (days >= AUTO_ARCHIVE_DAYS) {
+                task.archived = true;
+                changed = true;
+            }
+        }
+    });
+
+    if (changed) {
+        saveTasks();
+    }
+}
+
 //fungsi render ulang task
 function renderTasks(filter = "all"){
     taskList.innerHTML = "";
     let filteredTasks = [];
+
+    filteredTasks = filteredTasks.filter(t => !t.archived);
 
     if (tasks.length === 0){
         taskList.innerHTML = "<li><p>No task found</p></li>";
@@ -187,7 +234,10 @@ function renderTasks(filter = "all"){
             id: Date.now(),
             text: inputTask.value.trim(),
             date: inputDate.value,
-            completed:false
+
+            completed:false,
+            completedAt: null,
+            archived: false
         });
 
         saveTasks();
@@ -201,7 +251,10 @@ function renderTasks(filter = "all"){
         if (e.target.type === "checkbox"){
             const id = Number(e.target.dataset.id);
             const task = tasks.find(t => t.id === id);
+
             task.completed = e.target.checked;
+            task.completedAt = task.completed? new Date().toISOString().split("T")[0] : null;
+
             saveTasks();
             renderTasks(getActiveFilter());
         }
@@ -241,6 +294,7 @@ function renderTasks(filter = "all"){
 
     //inisialisasi awal
     loadTasks();
+    autoArchiveTasks();
     renderTasks();
 
 });
