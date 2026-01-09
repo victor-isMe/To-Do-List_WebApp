@@ -156,3 +156,25 @@ header p{
     background-color: blue;
     border: 1px solid black;
 }
+
+@media (max-width: 425px) {
+    .todo-container{
+        text-align: center;
+        width: 400px;
+        height: 400px;
+        margin: 0 auto;
+        background-color:rgb(219, 219, 219);
+        padding: 15px 20px;
+        border-radius: 12px;
+    }
+
+    .task-add {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    .task-add .add-btn {
+        width: 25%;
+        align-self: flex-end;
+    }
+}
