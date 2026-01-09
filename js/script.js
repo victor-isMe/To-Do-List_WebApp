@@ -88,6 +88,22 @@ function getTimeStatus(task) {
     return "upcoming";
 }
 
+function formatDate(dateString) {
+    const date = new Date(dateString);
+
+    return date.toLocaleDateString("id-ID", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric"
+    });
+}
+
+const statusPriority = {
+    today: 1, 
+    upcoming: 2,
+    overdue: 3
+};
+
 //fungsi render ulang task
 function renderTasks(filter = "all"){
     taskList.innerHTML = "";
@@ -111,6 +127,22 @@ function renderTasks(filter = "all"){
         return;
     }
 
+    filteredTasks.sort((a, b) => {
+        const statusA = getTimeStatus(a);
+        const statusB = getTimeStatus(b);
+
+        const priorityA = statusPriority[statusA];
+        const priorityB = statusPriority[statusB];
+
+        //Urutkan berdasarkan status waktu
+        if (priorityA !== priorityB) {
+            return priorityA - priorityB;
+        }
+
+        //Kalau status sama, urutkan berdasar tanggal
+        return new Date(a.date) - new Date(b.date);
+    });
+
     filteredTasks.forEach((task) => {
         const status = getTimeStatus(task);
         const li = document.createElement("li");
@@ -121,7 +153,7 @@ function renderTasks(filter = "all"){
         span.innerHTML = `
         <input type="checkbox" ${task.completed ? "checked" : ""} data-id="${task.id}">
         <s style="text-decoration: ${task.completed ? 'line-through' : 'none'};">
-            ${task.text} (${task.date}) 
+            ${task.text} (${formatDate(task.date)}) 
         </s>
         ${status? `<small class="status ${status}">${status}</small>` : ""}
         `;
