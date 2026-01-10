@@ -60,7 +60,11 @@ importInput.addEventListener("change", (e) => {
                 return;
             }
 
-            tasks = importedTasks;
+            tasks = importedTasks.map(task => ({
+                archived: false,
+                completedAt: null,
+                ...task
+            }));
             saveTasks();
             renderTasks();
 
@@ -127,7 +131,7 @@ function autoArchiveTasks() {
         if (task.completed && task.completedAt) {
             const days = daysBetween(task.completedAt);
 
-            if (days >= AUTO_ARCHIVE_DAYS) {
+            if (days >= AUTO_ARCHIVE_DAYS && days > 0) {
                 task.archived = true;
                 changed = true;
             }
@@ -152,9 +156,7 @@ function autoArchiveTasks() {
 //fungsi render ulang task
 function renderTasks(filter = "all"){
     taskList.innerHTML = "";
-    let filteredTasks = [];
-
-    filteredTasks = filteredTasks.filter(t => !t.archived);
+    let filteredTasks = tasks.filter(t => !t.archived);
 
     if (tasks.length === 0){
         taskList.innerHTML = "<li><p>No task found</p></li>";
@@ -162,11 +164,11 @@ function renderTasks(filter = "all"){
     }
 
     if (filter === "all"){
-        filteredTasks = tasks;
+        filteredTasks = tasks.filter(t => !t.archived);
     }else if(filter ==="pending"){
-        filteredTasks = tasks.filter((t) => !t.completed);
+        filteredTasks = filteredTasks.filter(t => !t.completed);
     }else if(filter ==="completed"){
-        filteredTasks = tasks.filter((t) => t.completed);
+        filteredTasks = filteredTasks.filter(t => t.completed);
     }
 
     if (filteredTasks.length === 0){
