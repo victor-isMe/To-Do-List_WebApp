@@ -157,7 +157,7 @@ header p{
     border: 1px solid black;
 }
 
-@media (max-width: 425px) {
+@media (max-width: 520px) {
     .todo-container{
         text-align: center;
         width: 400px;
