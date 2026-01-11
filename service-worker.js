@@ -34,16 +34,31 @@ self.addEventListener("activate", (event) => {
     );
 });
 
+//Mode Production(untuk user)
+// self.addEventListener("fetch", (event) => {
+//     event.respondWith(
+//         caches.match(event.request).then((response) => {
+//             //Jika ada di cache, maka dipakai(offline)
+//             if (response) {
+//                 return response;
+//             }
+
+//             //Kalau tidak ada di cache, maka ambil dari internet(online)
+//             return fetch(event.request);
+//         })
+//     );
+// });
+
+//Mode Development
 self.addEventListener("fetch", (event) => {
     event.respondWith(
-        caches.match(event.request).then((response) => {
-            //Jika ada di cache, maka dipakai(offline)
-            if (response) {
-                return response;
-            }
-
-            //Kalau tidak ada di cache, maka ambil dari internet(online)
-            return fetch(event.request);
-        })
+        fetch(event.request)
+            .then((response) => {
+                return caches.open(CACHE_NAME).then((cache) => {
+                    cache.put(event.request, response.clone());
+                    return response;
+                });
+            })
+            .catch(() => caches.match(event.request))
     );
 });
