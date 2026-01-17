@@ -158,10 +158,11 @@ function renderTasks(filter = "all"){
     taskList.innerHTML = "";
     let filteredTasks = tasks.filter(t => !t.archived);
 
-    if (tasks.length === 0){
-        taskList.innerHTML = "<li><p>No task found</p></li>";
-        return;
-    }
+    //empty task v1
+    // if (tasks.length === 0){
+    //     taskList.innerHTML = "<li><p>No task found</p></li>";
+    //     return;
+    // }
 
     if (filter === "all"){
         filteredTasks = tasks.filter(t => !t.archived);
@@ -171,11 +172,22 @@ function renderTasks(filter = "all"){
         filteredTasks = filteredTasks.filter(t => t.completed);
     }
 
-    //empty task v1
+    //empty filteredTask v1
     // if (filteredTasks.length === 0){
     //     taskList.innerHTML = "<li><p>No task found</p></li>";
     //     return;
     // }
+
+    //empty filteredTask v2
+    if (tasks.length === 0){
+        taskList.innerHTML = `
+            <li class="empty-state">
+                <p>Tidak ada task</p>
+                <small>Tambahkan task untuk mulai mengatur harimu</small>
+            </li>
+        `;
+        return;
+    }
 
     //empty task v2
     if (filteredTasks.length === 0){

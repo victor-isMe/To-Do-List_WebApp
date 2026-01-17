@@ -161,7 +161,7 @@ header p{
 .empty-state{
     text-align: center;
     padding: 2rem 1rem;
-    color: #777;
+    color: rgb(31, 31, 31);
 }
 .empty-state p{
     font-size: 1.1rem;
