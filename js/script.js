@@ -150,6 +150,7 @@ function autoArchiveTasks() {
 
     if (changed) {
         saveTasks();
+        console.log("Beberapa task telah diarsipkan secara otomatis");
     }
 }
 
@@ -225,7 +226,7 @@ function renderTasks(filter = "all"){
         const span = document.createElement("span");
         span.innerHTML = `
         <input type="checkbox" ${task.completed ? "checked" : ""} data-id="${task.id}">
-        <s style="text-decoration: ${task.completed ? 'line-through' : 'none'};">
+        <s style="text-decoration: ${task.completed ? 'line-through' : 'none'}; color: ${task.completed ? 'rgb(58, 58, 58)' : ''}">
             ${task.text} (${formatDate(task.date)}) 
         </s>
         ${status? `<small class="status ${status}">${status}</small>` : ""}
@@ -248,6 +249,13 @@ function renderTasks(filter = "all"){
     function validateInput(){
         return inputTask.value.trim() !== "" && inputDate.value.trim() !== "";
     }
+
+    //Add button lewat 'Enter'
+    inputTask.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" && validateInput()) {
+            addButton.click();
+        }
+    });
 
     //fungsi tambah task
     addButton.addEventListener("click", () => {

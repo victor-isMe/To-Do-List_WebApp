@@ -171,6 +171,27 @@ header p{
     font-size: 0.85rem;
 }
 
+/*Disable addButton*/
+button:disabled{
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Animasi saat task muncul */
+.task-value {
+    animation: fadeIn 0.25s ease;
+}
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 @media (max-width: 520px) {
     .todo-container{
         text-align: center;
