@@ -157,6 +157,20 @@ header p{
     border: 1px solid black;
 }
 
+/*empty task v2*/
+.empty-state{
+    text-align: center;
+    padding: 2rem 1rem;
+    color: #777;
+}
+.empty-state p{
+    font-size: 1.1rem;
+    margin-bottom: 4px;
+}
+.empty-state small{
+    font-size: 0.85rem;
+}
+
 @media (max-width: 520px) {
     .todo-container{
         text-align: center;

@@ -171,8 +171,20 @@ function renderTasks(filter = "all"){
         filteredTasks = filteredTasks.filter(t => t.completed);
     }
 
+    //empty task v1
+    // if (filteredTasks.length === 0){
+    //     taskList.innerHTML = "<li><p>No task found</p></li>";
+    //     return;
+    // }
+
+    //empty task v2
     if (filteredTasks.length === 0){
-        taskList.innerHTML = "<li><p>No task found</p></li>";
+        taskList.innerHTML = `
+            <li class="empty-state">
+                <p>Tidak ada task</p>
+                <small>Tambahkan task untuk mulai mengatur harimu</small>
+            </li>
+        `;
         return;
     }
 
