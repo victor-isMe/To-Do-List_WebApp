@@ -8,6 +8,7 @@ const clearButton = document.querySelector(".clear-button");
 const exportBtn = document.querySelector(".export-btn");
 const importBtn = document.querySelector(".import-btn");
 const importInput = document.querySelector(".import-input");
+const toast = document.getElementById("toast");
 
 let tasks = [];
 
@@ -56,7 +57,7 @@ importInput.addEventListener("change", (e) => {
             const importedTasks = JSON.parse(reader.result);
 
             if (!Array.isArray(importedTasks)) {
-                alert("File tidak valid!");
+                showToast("File tidak valid!");
                 return;
             }
 
@@ -68,9 +69,9 @@ importInput.addEventListener("change", (e) => {
             saveTasks();
             renderTasks();
 
-            alert("Import berhasil!");
+            showToast("Import berhasil!");
         } catch (err) {
-            alert("Gagal membaca file JSON!");
+            showToast("Gagal membaca file JSON!");
         }
     };
 
@@ -152,6 +153,16 @@ function autoArchiveTasks() {
         saveTasks();
         console.log("Beberapa task telah diarsipkan secara otomatis");
     }
+}
+
+//Fungsi untuk toast, pengganti alert
+function showToast(message) {
+    toast.textContent = message;
+    toast.classList.add("show");
+
+    setTimeout(() => {
+        toast.classList.remove("show");
+    }, 2000);
 }
 
 //fungsi render ulang task
@@ -250,17 +261,10 @@ function renderTasks(filter = "all"){
         return inputTask.value.trim() !== "" && inputDate.value.trim() !== "";
     }
 
-    //Add button lewat 'Enter'
-    inputTask.addEventListener("keydown", (e) => {
-        if (e.key === "Enter" && validateInput()) {
-            addButton.click();
-        }
-    });
-
     //fungsi tambah task
     addButton.addEventListener("click", () => {
         if (!validateInput()){
-            alert("Task dan tanggal tidak boleh kosong!");
+            showToast("Task dan tanggal tidak boleh kosong!");
             return;
         }
 
@@ -274,11 +278,19 @@ function renderTasks(filter = "all"){
             archived: false
         });
 
+        showToast("Task berhasil ditambahkan");
         saveTasks();
         inputTask.value = "";
         inputDate.value = "";
         renderTasks(getActiveFilter());
         });
+
+    //Add button lewat 'Enter'
+    inputTask.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" && validateInput()) {
+            addButton.click();
+        }
+    });
 
     //fungsi toggle status selesai
     taskList.addEventListener("change", (e) => {

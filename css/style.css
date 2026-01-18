@@ -171,10 +171,32 @@ header p{
     font-size: 0.85rem;
 }
 
-/*Disable addButton*/
-button:disabled{
-    opacity: 0.5;
-    cursor: not-allowed;
+/*Toast pengganti alert*/
+.toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #333;
+    color: #fff;
+    padding: 12px 18px;
+    border-radius: 8px;
+    font-size: 14px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s, transform 0.3s;
+}
+.toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-10px);
+}
+
+/* Saat invalid input */
+input.invalid {
+    border: 2px solid red;
+}
+input.valid {
+    border: 2px solid #2ecc71;
 }
 
 /* Animasi saat task muncul */
