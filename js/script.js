@@ -129,6 +129,7 @@ function autoArchiveTasks() {
 
             if (days >= AUTO_ARCHIVE_DAYS && days > 0) {
                 task.archived = true;
+                update(task);
                 changed = true;
             }
         }
@@ -139,6 +140,7 @@ function autoArchiveTasks() {
 
             if (days >= AUTO_ARCHIVE_DAYS) {
                 task.archived = true;
+                update(task);
                 changed = true;
             }
         }
@@ -342,6 +344,7 @@ function renderTasks(filter = "all"){
             task.completed = e.target.checked;
             task.completedAt = task.completed? new Date().toISOString().split("T")[0] : null;
 
+            update(task);
             saveTasks();
             renderTasks(getActiveFilter());
         }
