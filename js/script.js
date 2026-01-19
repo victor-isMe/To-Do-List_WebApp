@@ -188,7 +188,7 @@ inputDate.addEventListener("input", updateInputValidation);
 
 //Fungsi untuk update updatedAt
 function update(task) {
-    task.updatedAt = new Date().toISOString;
+    task.updatedAt = new Date().toISOString();
 }
 
 //Fungsi yang bekerja saat melakukan merge task
