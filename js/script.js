@@ -314,7 +314,9 @@ function renderTasks(filter = "all"){
 
             completed:false,
             completedAt: null,
-            archived: false
+            archived: false,
+
+            updatedAt: new Date().toISOString()
         });
 
         showToast("Task berhasil ditambahkan");
