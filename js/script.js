@@ -61,6 +61,9 @@ importInput.addEventListener("change", (e) => {
                 return;
             }
 
+            //Untuk menjalankan merge task dengan faktor updatedAt
+            tasks = mergeTasks(tasks, importedTasks);
+
             saveTasks();
             renderTasks();
 
