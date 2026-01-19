@@ -181,6 +181,29 @@ function updateInputValidation() {
 inputTask.addEventListener("input", updateInputValidation);
 inputDate.addEventListener("input", updateInputValidation);
 
+//Fungsi untuk update updatedAt
+function update(task) {
+    task.updatedAt = new Date().toISOString;
+}
+
+//Fungsi yang bekerja saat melakukan merge task
+function mergeTasks(localTasks, incomingTasks) {
+    const map = new Map();
+
+    [...localTasks, ...incomingTasks].forEach(task => {
+        if (!map.has(task.id)) {
+            map.set(task.id, task);
+        } else {
+            const existing = map.get(task.id);
+            if (new Date(task.updatedAt) > new Date(existing.updatedAt)) {
+                map.set(task.id, task);
+            }
+        }
+    });
+
+    return Array.from(map.values());
+}
+
 //fungsi render ulang task
 function renderTasks(filter = "all"){
     taskList.innerHTML = "";
