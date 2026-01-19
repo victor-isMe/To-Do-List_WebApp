@@ -61,11 +61,6 @@ importInput.addEventListener("change", (e) => {
                 return;
             }
 
-            tasks = importedTasks.map(task => ({
-                archived: false,
-                completedAt: null,
-                ...task
-            }));
             saveTasks();
             renderTasks();
 
