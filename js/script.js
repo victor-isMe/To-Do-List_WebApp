@@ -12,6 +12,7 @@ const toast = document.getElementById("toast");
 const historyBtn = document.querySelector(".history-btn");
 const archiveBox = document.querySelector(".archive-box");
 const archiveList = document.querySelector(".archive-list");
+const clearHistoryBtn = document.querySelector(".clear-archive");
 
 let tasks = [];
 
@@ -430,6 +431,18 @@ function renderTasks(filter = "all"){
             historyBtn.textContent = "View History";
             historyBtn.classList.remove("back");
             hideArchiveView();
+        }
+    });
+
+    //Hapus archive task
+    clearHistoryBtn.addEventListener("click", () => {
+        if (confirm("Apa kamu yakin ingin menghapus semua history task?")) {
+            archiveList.innerHTML = "";
+            tasks = tasks.filter(t => !t.archived);
+            saveTasks();
+            renderTasks();
+
+            showToast("History task berhasil dihapus");
         }
     });
 
