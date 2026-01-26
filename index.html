@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
     <link rel="manifest" href="manifest.json">
+    <link rel="website icon" type="png" href="./images">
 </head>
 <body>
     <header>
@@ -16,35 +17,42 @@
     </header>
 
     <section class="todo-container">
-        <h2>ToDo List 📝</h2>
-        <div class="task-add">
-            <input class="input-task" type="text" name="task-item" placeholder="Add Task">
-            <input class="input-date" type="date" name="task-item-date">
-            <button class="add-btn" type="button">Add</button>
-            <div class="task-tools">
-                <div class="task-filter">
-                    <span class="active">All</span><span>Pending</span><span>Completed</span>
-                </div>
-                <button class="clear-button" type="button">Clear All</button>
-            </div>  
+        <div class="todo-box">
+            <h2>ToDo List 📝</h2>
+            <div class="task-add">
+                <input class="input-task" type="text" name="task-item" placeholder="Add Task">
+                <input class="input-date" type="date" name="task-item-date">
+                <button class="add-btn" type="button">Add</button>
+                <div class="task-tools">
+                    <div class="task-filter">
+                        <span class="active">All</span><span>Pending</span><span>Completed</span>
+                    </div>
+                    <button class="clear-button" type="button">Clear All</button>
+                </div>  
+            </div>
+            <div class="task">
+                <ul class="task-list">
+                    <li><p></p></li>
+                    <li class="task-value">
+                        <span></span>
+                            <div class="subtools">
+                                <span><i class="fa fa-trash" style="color:red;"></i></span>
+                            </div>
+                    </li>
+                </ul>
+            </div>
         </div>
-        <div class="task">
-            <ul class="task-list">
-                <li><p></p></li>
-                <li class="task-value">
-                    <span></span>
-                        <div class="subtools">
-                            <span><i class="fa fa-trash" style="color:red;"></i></span>
-                        </div>
-                </li>
-            </ul>
-        </div>   
+        
+        <div class="archive-box">
+            <ul class="archive-list"></ul>
+        </div>
     </section>
 
     <div class="btn-add">
         <button class="export-btn">Export</button>
         <input type="file" class="import-input" accept=".json" hidden>
         <button class="import-btn">Import</button>
+        <button class="history-btn">View History</button>
     </div>
 
     <script src="./js/script.js"></script>

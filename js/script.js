@@ -9,8 +9,13 @@ const exportBtn = document.querySelector(".export-btn");
 const importBtn = document.querySelector(".import-btn");
 const importInput = document.querySelector(".import-input");
 const toast = document.getElementById("toast");
+const historyBtn = document.querySelector(".history-btn");
+const archiveBox = document.querySelector(".archive-box");
+const archiveList = document.querySelector(".archive-list");
 
 let tasks = [];
+
+let isArchiveView = false;
 
 //Fungsi save tasks
 function saveTasks() {
@@ -382,6 +387,49 @@ function renderTasks(filter = "all"){
             tasks = [];
             saveTasks();
             renderTasks();
+        }
+    });
+
+    //Fungsi show archive history
+    function renderArchiveTasks() {
+        archiveList.innerHTML = "";
+
+        const archivedTasks = tasks.filter(t => t.archived);
+
+        if (archivedTasks.length === 0) {
+            archiveList.innerHTML = `
+                <p class="empty-state">History task masih kosong</p>
+            `;
+            return;
+        }
+
+        archivedTasks.forEach(task => {
+            const list = document.createElement("li");
+            list.textContent = `${task.text} (${formatDate(task.date)})`;
+            archiveList.appendChild(list);
+        });
+    }
+    function showArchiveView() {
+        archiveBox.classList.add("show");
+        renderArchiveTasks();
+    }
+    function hideArchiveView() {
+        archiveBox.classList.remove("show");
+        archiveList.innerHTML = "";
+    }
+
+    //Fitur view history
+    historyBtn.addEventListener("click", () => {
+        isArchiveView = !isArchiveView;
+
+        if (isArchiveView) {
+            historyBtn.textContent = "< Back";
+            historyBtn.classList.add("back");
+            showArchiveView();
+        } else {
+            historyBtn.textContent = "View History";
+            historyBtn.classList.remove("back");
+            hideArchiveView();
         }
     });
 
