@@ -13,6 +13,7 @@ const historyBtn = document.querySelector(".history-btn");
 const archiveBox = document.querySelector(".archive-box");
 const archiveList = document.querySelector(".archive-list");
 const clearHistoryBtn = document.querySelector(".clear-archive");
+const maxLength = 40;
 
 let tasks = [];
 
@@ -290,6 +291,15 @@ function renderTasks(filter = "all"){
         return inputTask.value.trim() !== "" && inputDate.value.trim() !== "";
     }
 
+    //Membatasi input user
+    inputTask.addEventListener("input", () => {
+        const length = inputTask.value.length;
+
+        if (length >= maxLength) {
+            showToast("Anda mencapai max input");
+        }
+    });
+
     //fungsi tambah task
     addButton.addEventListener("click", () => {
         if (!validateInput()){
@@ -364,7 +374,7 @@ function renderTasks(filter = "all"){
     //fungsi clear all
     clearButton.addEventListener("click", () => {
         if (confirm("Apa kamu yakin ingin menghapus semua task?")) {
-            tasks = [];
+            tasks = tasks.filter(t => t.archived);
             saveTasks();
             renderTasks();
         }
