@@ -200,12 +200,6 @@ function renderTasks(filter = "all"){
     taskList.innerHTML = "";
     let filteredTasks = tasks.filter(t => !t.archived);
 
-    //empty task v1
-    // if (tasks.length === 0){
-    //     taskList.innerHTML = "<li><p>No task found</p></li>";
-    //     return;
-    // }
-
     if (filter === "all"){
         filteredTasks = tasks.filter(t => !t.archived);
     }else if(filter ==="pending"){
@@ -213,12 +207,6 @@ function renderTasks(filter = "all"){
     }else if(filter ==="completed"){
         filteredTasks = filteredTasks.filter(t => t.completed);
     }
-
-    //empty filteredTask v1
-    // if (filteredTasks.length === 0){
-    //     taskList.innerHTML = "<li><p>No task found</p></li>";
-    //     return;
-    // }
 
     //empty filteredTask v2
     if (tasks.length === 0){
@@ -435,9 +423,37 @@ function renderTasks(filter = "all"){
         }
     });
 
+    //Menghitung jumlah task today dan overdue
+    function counterTasks() {
+        let today = 0;
+        let overdue = 0;
+
+        tasks.forEach(task => {
+            if (task.completed || task.archived) return;
+
+            const status = getTimeStatus(task);
+
+            if (status === "today") today++;
+            if (status === "overdue") overdue++;
+        });
+
+        return {today, overdue};
+    }
+
+    //Menampilkan jumlah task today dan overdue dalam toast
+    function notifTasks() {
+        const {today, overdue} = counterTasks();
+
+        if (today === 0 && overdue === 0) return;
+        if (today > 0 && overdue === 0) return showToast(`Kamu punya ${today} task hari ini`);
+        if (overdue > 0 && today === 0) return showToast(`Kamu punya ${overdue} task kadaluarsa`);
+        if (today > 0 && overdue > 0) return showToast(`Kamu punya ${today} task hari ini dan ${overdue} task kadaluarsa`);
+    }
+
     //inisialisasi awal
     loadTasks();
     autoArchiveTasks();
+    notifTasks();
     renderTasks();
 
 });
