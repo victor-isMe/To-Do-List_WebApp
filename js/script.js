@@ -171,27 +171,6 @@ function showToast(message) {
     }, 2000);
 }
 
-//Fungsi untuk menambahkan class untuk input valid/invalid
-function updateInputValidation() {
-    if (inputTask.value.trim() === "") {
-        inputTask.classList.add("invalid");
-        inputTask.classList.remove("valid");
-    } else {
-        inputTask.classList.remove("invalid");
-        inputTask.classList.add("valid");
-    }
-
-    if (inputDate.value.trim() === "") {
-        inputDate.classList.add("invalid");
-        inputDate.classList.remove("valid");
-    } else {
-        inputDate.classList.remove("invalid");
-        inputDate.classList.add("valid");
-    }
-}
-inputTask.addEventListener("input", updateInputValidation);
-inputDate.addEventListener("input", updateInputValidation);
-
 //Fungsi untuk update updatedAt
 function update(task) {
     task.updatedAt = new Date().toISOString();
