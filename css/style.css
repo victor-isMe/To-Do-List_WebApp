@@ -317,10 +317,12 @@ header p{
     .task-add .input-task {
         flex: 50%;
     }
-    .task-add .input-date, .task-add .add-btn {
+    .task-add .input-date {
         flex: 1;
+        font-size: 14px;
     }
     .task-add .add-btn {
+        flex: 1;
         padding: 8px;
     }
 }
