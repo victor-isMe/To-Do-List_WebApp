@@ -290,6 +290,14 @@ function renderTasks(filter = "all"){
 
     //fungsi tambah task
     addButton.addEventListener("click", () => {
+        if (inputTask.value.trim() === "" && inputDate.value.trim() !== "") {
+            showToast("Task tidak boleh kosong!");
+            return;
+        }
+        if (inputTask.value.trim() !== "" && inputDate.value.trim() === "") {
+            showToast("Tanggal tidak boleh kosong!");
+            return;
+        }
         if (!validateInput()){
             showToast("Task dan tanggal tidak boleh kosong!");
             return;
