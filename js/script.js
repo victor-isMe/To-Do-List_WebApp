@@ -85,7 +85,7 @@ importInput.addEventListener("change", (e) => {
 
 //Fungsi set status waktu
 function getTimeStatus(task) {
-    if (task.completed) return "";
+    if (task.completed) return "completed";
 
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -111,7 +111,8 @@ function formatDate(dateString) {
 const statusPriority = {
     today: 1, 
     upcoming: 2,
-    overdue: 3
+    overdue: 3,
+    completed: 4
 };
 
 const AUTO_ARCHIVE_DAYS = 1;
@@ -239,6 +240,11 @@ function renderTasks(filter = "all"){
         //Urutkan berdasarkan status waktu
         if (priorityA !== priorityB) {
             return priorityA - priorityB;
+        }
+
+        //Urutan untuk task.completed berdasarkan waktu completed
+        if (statusA === "completed" && statusB === "completed") {
+            return new Date(b.completedAt) - new Date(a.completedAt);
         }
 
         //Kalau status sama, urutkan berdasar tanggal
