@@ -114,7 +114,7 @@ const statusPriority = {
     overdue: 3
 };
 
-const AUTO_ARCHIVE_DAYS = 2;
+const AUTO_ARCHIVE_DAYS = 1;
 
 function daysBetween(dateString) {
     const today = new Date();
@@ -137,7 +137,7 @@ function autoArchiveTasks() {
         if (task.completed && task.completedAt) {
             const days = daysBetween(task.completedAt);
 
-            if (days >= AUTO_ARCHIVE_DAYS && days > 0) {
+            if (days > AUTO_ARCHIVE_DAYS && days > 0) {
                 task.archived = true;
                 update(task);
                 changed = true;
@@ -148,7 +148,7 @@ function autoArchiveTasks() {
         if (!task.completed) {
             const days = daysBetween(task.date);
 
-            if (days >= AUTO_ARCHIVE_DAYS) {
+            if (days > AUTO_ARCHIVE_DAYS) {
                 task.archived = true;
                 update(task);
                 changed = true;
@@ -158,7 +158,6 @@ function autoArchiveTasks() {
 
     if (changed) {
         saveTasks();
-        console.log("Beberapa task telah diarsipkan secara otomatis");
     }
 }
 
