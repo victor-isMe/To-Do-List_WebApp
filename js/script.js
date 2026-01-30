@@ -396,7 +396,7 @@ function renderTasks(filter = "all"){
 
         archivedTasks.forEach(task => {
             const list = document.createElement("li");
-            list.textContent = `${task.text} (${formatDate(task.date)})`;
+            list.textContent = `${task.text} (${formatDate(task.date)}) - ${task.completed ? "Selesai":"Tidak selesai"}`;
             archiveList.appendChild(list);
         });
     }
