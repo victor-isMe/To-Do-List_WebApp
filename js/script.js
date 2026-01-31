@@ -14,7 +14,7 @@ const archiveBox = document.querySelector(".archive-box");
 const archiveList = document.querySelector(".archive-list");
 const clearHistoryBtn = document.querySelector(".clear-archive");
 const maxLength = 40;
-const CLOUD_URL = "https://697d43ca97386252a267de4f.mockapi.io/tasks/1/tasks";
+const CLOUD_URL = "https://697d43ca97386252a267de4f.mockapi.io/tasks";
 const syncUpBtn = document.querySelector(".syncUp-btn");
 const syncDownBtn = document.querySelector(".syncDown-btn");
 
@@ -90,7 +90,7 @@ importInput.addEventListener("change", (e) => {
 async function syncToCloud() {
     try {
         const response = await fetch(CLOUD_URL, {
-            method: "PUT",
+            method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
@@ -99,7 +99,7 @@ async function syncToCloud() {
             })
         });
 
-        if (!response.ok) throw new Error("Sync gagal");
+        if (!response.ok) throw new Error("Sync gagal: " + response.status);
 
         showToast("Data berhasil di sync ke cloud");
     } catch (err) {
