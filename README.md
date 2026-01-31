@@ -1,1 +1,3 @@
 WebApp To-Do-List dengan local storage. Still in progress...
+
+Date Development: (Start from zero: 28 July 2025), (Continue: 07 January 2026) - Now
