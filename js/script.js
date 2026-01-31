@@ -450,7 +450,7 @@ function renderTasks(filter = "all"){
 
         archivedTasks.forEach(task => {
             const list = document.createElement("li");
-            list.textContent = `${task.text} (${formatDate(task.date)}) - ${task.completed ? "Selesai":"Tidak selesai"}`;
+            list.textContent = `${task.text} (${formatDate(task.date)}) - ${task.completed ? "Selesai pada ":"Tidak selesai"} pada ${task.completed ? formatDate(task.completedAt):""}`;
             archiveList.appendChild(list);
         });
     }
