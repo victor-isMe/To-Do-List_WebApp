@@ -14,6 +14,9 @@ const archiveBox = document.querySelector(".archive-box");
 const archiveList = document.querySelector(".archive-list");
 const clearHistoryBtn = document.querySelector(".clear-archive");
 const maxLength = 40;
+const CLOUD_URL = "https://697d43ca97386252a267de4f.mockapi.io/tasks/1/tasks";
+const syncUpBtn = document.querySelector(".syncUp-btn");
+const syncDownBtn = document.querySelector(".syncDown-btn");
 
 let tasks = [];
 
@@ -82,6 +85,49 @@ importInput.addEventListener("change", (e) => {
 
     reader.readAsText(file);
 });
+
+//Sync up (local ke cloud)
+async function syncToCloud() {
+    try {
+        const response = await fetch(CLOUD_URL, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                tasks: tasks
+            })
+        });
+
+        if (!response.ok) throw new Error("Sync gagal");
+
+        showToast("Data berhasil di sync ke cloud");
+    } catch (err) {
+        showToast("Gagal sync: " + err.message);
+    }
+}
+
+//Sync down (cloud ke local)
+async function syncFromCloud() {
+    try {
+        const response = await fetch(CLOUD_URL);
+        const data = await response.json();
+
+        if (!data.tasks) return showToast("Cloud kosong");
+
+        tasks = data.tasks || [];
+        saveTasks();
+        renderTasks();
+
+        showToast("Data berhasil diambil dari cloud");
+    } catch (err) {
+        showToast("Gagal ambil data: " + err.message);
+    }
+}
+
+//event listener untuk sync button
+syncUpBtn.addEventListener("click", syncToCloud);
+syncDownBtn.addEventListener("click", syncFromCloud);
 
 //Fungsi set status waktu
 function getTimeStatus(task) {
