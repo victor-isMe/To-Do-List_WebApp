@@ -113,9 +113,17 @@ async function syncFromCloud() {
         const response = await fetch(CLOUD_URL);
         const data = await response.json();
 
-        if (!data.tasks) return showToast("Cloud kosong");
+        if (!data.length) return showToast("Cloud kosong");
 
-        tasks = data.tasks || [];
+        const cloudData = data[0];
+
+        if (!cloudData.tasks || cloudData.tasks.length === 0) {
+            showToast("Tasks kosong");
+            return;
+        }
+
+        tasks = cloudData.tasks;
+        
         saveTasks();
         renderTasks();
 
