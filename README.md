@@ -46,17 +46,20 @@ Projek ini dibuat sebagai latihan fundamental sebelum masuk ke React & arsitektu
 
 ## Project Structure
 To-Do-List_WebApp/
-|--css/
-|  |--style.css
-|--icons/
-|  |--favicon - 32.png
-|  |--icon-192.png
-|  |--icon-512.png
-|--js/
-|  |--script.js
-|--index.html
-|--manifest.json
-|--service-worker.js
+```
+├── 📁 css
+│   └── 🎨 style.css
+├── 📁 icons
+│   ├── 🖼️ favicon - 32.png
+│   ├── 🖼️ icon-192.png
+│   └── 🖼️ icon-512.png
+├── 📁 js
+│   └── 📄 script.js
+├── 📝 README.md
+├── 🌐 index.html
+├── ⚙️ manifest.json
+└── 📄 service-worker.js
+```
 
 ---
 
